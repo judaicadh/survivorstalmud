@@ -34,21 +34,33 @@
       the communities that carried them onward.</p>
 
     <h2>How the map works</h2>
-    <p>The map is a static site with no server or database. Locations are stored
-      in a Google Sheet with <code>latitude</code> and <code>longitude</code>
-      columns. When the sheet is published to the web as CSV, the map reads it
+    <p>The map is a static site with no server or database. The data lives in a
+      Google Sheet. When the sheet is published to the web as CSV, the map reads it
       live on load — so editing the spreadsheet updates the map with no code
       changes. The basemap is CARTO's Positron tiles, drawn with Leaflet.</p>
 
+    <h2>Tracing movement</h2>
+    <p>Each <strong>row</strong> in the sheet is one <em>stop</em> in a book's
+      life — where it was, who held it, and what happened. Rows that share a
+      <code>book_id</code> are grouped into a single journey and connected in
+      order, so the map shows a copy moving and changing hands over time. Give the
+      stops a <code>sequence</code> (1, 2, 3…) to set the order.</p>
+
     <h2>Contributing data</h2>
-    <p>Add a row to the connected Google Sheet with these columns:</p>
+    <p>Add a row to the connected Google Sheet with these columns
+      (only <code>latitude</code> and <code>longitude</code> are required):</p>
     <ul>
-      <li><code>title</code> — name of the place or event</li>
+      <li><code>book_id</code> — groups the stops of one physical copy (e.g. <code>copy-1</code>)</li>
+      <li><code>sequence</code> — order of this stop in the journey (1, 2, 3…)</li>
+      <li><code>date</code> — when the book was here or changed hands</li>
+      <li><code>location</code> — place name</li>
       <li><code>latitude</code>, <code>longitude</code> — decimal coordinates (required)</li>
-      <li><code>date</code> — optional</li>
-      <li><code>description</code> — optional</li>
-      <li><code>source</code>, <code>url</code> — optional citation and link</li>
+      <li><code>owner</code> — who held it at this stop</li>
+      <li><code>event</code> — what happened (printed, gifted, sold, donated, inherited…)</li>
+      <li><code>description</code>, <code>source</code>, <code>url</code> — optional detail, citation, link</li>
     </ul>
+    <p>A row with no <code>book_id</code> still appears as a single standalone
+      point, so you can mix individual locations with traced journeys.</p>
   </main>
 
   <footer class="site">Tracing the Survivors' Talmud · A static mapping project</footer>

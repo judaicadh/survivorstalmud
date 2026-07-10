@@ -180,6 +180,47 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   font-family: "Iowan Old Style", Palatino, Georgia, serif;
   box-shadow: 2px 2px 0 rgba(23, 19, 13, 0.35);
 }
+/* Numbered journey pins */
+.stop-pin { background: none; border: none; }
+.stop-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  color: #fff;
+  font-family: "Iowan Old Style", Palatino, Georgia, serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.map-legend {
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  padding: 8px 11px;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  box-shadow: 2px 2px 0 rgba(23, 19, 13, 0.3);
+}
+.map-legend strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--red-deep);
+  letter-spacing: 0.04em;
+}
+.map-legend .row { display: flex; align-items: center; }
+.map-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 7px;
+  border: 1px solid var(--ink);
+  flex: none;
+}
+
 .leaflet-popup-content-wrapper {
   border-radius: 3px;
   border: 2px solid var(--ink);
