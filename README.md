@@ -12,8 +12,7 @@ Holocaust survivors in the Displaced Persons camps of occupied Germany, 1948–1
 
 ## How it works
 
-No build step, no server, no database. Pure HTML/CSS/JS using
-[Leaflet](https://leafletjs.com/), the [CARTO](https://carto.com/) Positron
+Pure HTML/CSS/JS using [Leaflet](https://leafletjs.com/), the [CARTO](https://carto.com/) Positron
 basemap, and [PapaParse](https://www.papaparse.com/) to read a published
 Google Sheet CSV at page load.
 
@@ -31,15 +30,7 @@ Google Sheet CSV at page load.
 
 Editing the sheet then updates the map automatically — no code changes, no redeploy.
 
-## Running locally
 
-Because the pages fetch a remote CSV, open them through a local server rather than
-`file://`:
-
-```bash
-python3 -m http.server 8000
-# then visit http://localhost:8000
-```
 
 ## Deploying (GitHub Pages)
 
