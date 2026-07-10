@@ -41,10 +41,14 @@
 
     <h2>Tracing movement</h2>
     <p>Each <strong>row</strong> in the sheet is one <em>stop</em> in a book's
-      life — where it was, who held it, and what happened. Rows that share a
-      <code>book_id</code> are grouped into a single journey and connected in
-      order, so the map shows a copy moving and changing hands over time. Give the
-      stops a <code>sequence</code> (1, 2, 3…) to set the order.</p>
+      life — where it was, who held it, and what happened. On the map, every
+      distinct place is a single pin; its popup lists the copies and successive
+      owners tied to that location, so a book changing hands without leaving a city
+      still reads as one pin. Nearby pins cluster so hundreds of copies stay
+      legible.</p>
+    <p>Rows that share a <code>book_id</code> belong to one copy. Search a copy's
+      ID on the map to trace it: its path is drawn and a panel lists its owners in
+      order. Give the stops a <code>sequence</code> (1, 2, 3…) to set that order.</p>
 
     <h2>Contributing data</h2>
     <p>Add a row to the connected Google Sheet with these columns
