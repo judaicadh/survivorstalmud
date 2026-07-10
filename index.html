@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Map · Tracing the Survivors' Talmud</title>
-  <meta name="description" content="Mapping the printing and circulation of the Survivors' Talmud." />
+  <title>Tracing the Survivors' Talmud</title>
+  <meta name="description" content="The story of the Survivors' Talmud and its dispersion, with an interactive map." />
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -17,20 +16,104 @@
         <small>A mapping project</small>
       </a>
       <nav>
-        <a href="index.html" class="active">Map</a>
+        <a href="index.html" class="active">Story</a>
         <a href="bibliography.html">Bibliography</a>
         <a href="about.html">About</a>
       </nav>
     </div>
   </header>
 
-  <div id="map"></div>
-  <div class="map-status" id="map-status">Loading…</div>
+  <!-- ---------- Scrolling story ---------- -->
+  <section class="hero">
+    <p class="kicker">1948&ndash;1950 · Occupied Germany</p>
+    <h1>The Survivors' Talmud</h1>
+    <p class="lede">How a book printed by the surviving remnant of European Jewry
+      was carried out of the ashes and scattered across the world.</p>
+    <p class="scroll-cue">Scroll to begin &darr;</p>
+  </section>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJ/S6W9EL60eZG7wJd0zL5wxeEcTU=" crossorigin=""></script>
+  <main class="story">
+    <section class="story-section reveal">
+      <h2>A world of learning, destroyed</h2>
+      <p>For centuries, the great centers of Talmud study stood in the towns and
+        cities of Central and Eastern Europe &mdash; in Vilna, Lublin, Warsaw,
+        Frankfurt. The Shoah annihilated those communities. Yeshivot were emptied,
+        libraries burned, and the printing houses that had produced the Talmud for
+        generations were destroyed along with the people who read from them.</p>
+    </section>
+
+    <section class="story-section reveal">
+      <h2>The surviving remnant</h2>
+      <p>After liberation, hundreds of thousands of Jewish survivors gathered in the
+        Displaced Persons camps of the American occupation zone. They called
+        themselves the <em>She'erit Hapletah</em> &mdash; the surviving remnant.
+        Amid the uncertainty of where they would live, they set about rebuilding a
+        religious and cultural life: schools, newspapers, and study houses.</p>
+    </section>
+
+    <section class="story-section reveal">
+      <h2>Printing the Talmud on German soil</h2>
+      <p>Between 1948 and 1950, with the support of the United States Army, the
+        surviving remnant printed a complete edition of the Babylonian Talmud &mdash;
+        the first ever printed on German soil after the war. Its title page framed
+        the volumes between two images: above, a view of the Land of Israel; below,
+        a scene of barbed wire and a labor camp, inscribed with the words
+        <em>"from bondage to redemption, from darkness to great light."</em></p>
+    </section>
+
+    <section class="story-section reveal">
+      <h2>Dispersion</h2>
+      <p>The Survivors' Talmud was never meant to stay where it was made. As the
+        camps closed and survivors emigrated &mdash; to Israel, to the United States,
+        and beyond &mdash; they carried the volumes with them. Sets were given to
+        libraries, congregations, and families, scattering the edition across the
+        world.</p>
+    </section>
+
+    <section class="story-section reveal center">
+      <h2>Trace the movement</h2>
+      <p>The map below follows the places connected to the printing and dispersion
+        of the Survivors' Talmud. It is drawn live from an open dataset &mdash;
+        select a marker to read about each location.</p>
+      <p class="scroll-cue">&darr;</p>
+    </section>
+  </main>
+
+  <!-- ---------- Sheet-driven map ---------- -->
+  <section class="map-section">
+    <div class="map-wrap">
+      <div id="map"></div>
+      <div class="map-status" id="map-status">Loading…</div>
+    </div>
+  </section>
+
+  <footer class="site">Tracing the Survivors' Talmud · A static mapping project</footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/map.js"></script>
+  <script>
+    // Reveal story sections as they scroll into view.
+    (function () {
+      const els = document.querySelectorAll(".reveal");
+      if (!("IntersectionObserver" in window)) {
+        els.forEach((el) => el.classList.add("in"));
+        return;
+      }
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+      els.forEach((el) => io.observe(el));
+    })();
+  </script>
 </body>
 </html>
