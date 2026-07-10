@@ -7,6 +7,8 @@
   <meta name="description" content="The story of the Survivors' Talmud and its dispersion, with an interactive map." />
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -83,14 +85,22 @@
   <!-- ---------- Sheet-driven map ---------- -->
   <section class="map-section">
     <div class="map-wrap">
+      <div class="map-toolbar">
+        <label for="copy-search">Trace a copy</label>
+        <input id="copy-search" list="copy-list" placeholder="Type a copy ID…" autocomplete="off" />
+        <datalist id="copy-list"></datalist>
+        <button id="copy-clear" type="button">Show all</button>
+      </div>
       <div id="map"></div>
       <div class="map-status" id="map-status">Loading…</div>
+      <aside class="copy-panel" id="copy-panel" hidden></aside>
     </div>
   </section>
 
   <footer class="site">Tracing the Survivors' Talmud · A static mapping project</footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/map.js"></script>
