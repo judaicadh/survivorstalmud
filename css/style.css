@@ -180,46 +180,122 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   font-family: "Iowan Old Style", Palatino, Georgia, serif;
   box-shadow: 2px 2px 0 rgba(23, 19, 13, 0.35);
 }
-/* Numbered journey pins */
-.stop-pin { background: none; border: none; }
-.stop-dot {
+/* Place pins (one per location, sized by number of copies) */
+.place-pin { background: none; border: none; }
+.place-dot {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
   border-radius: 50%;
+  background: var(--red);
   border: 2px solid #fff;
   color: #fff;
   font-family: "Iowan Old Style", Palatino, Georgia, serif;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: bold;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
-.map-legend {
+
+/* Popup list of copies/owners at a place */
+.place-list { max-height: 210px; overflow-y: auto; margin-top: 0.4rem; }
+.place-row {
+  padding: 0.35rem 0;
+  border-top: 1px dotted var(--cream-deep);
+  font-size: 0.86rem;
+}
+.copy-link { color: var(--red); font-weight: bold; text-decoration: none; }
+.copy-link:hover { text-decoration: underline; }
+
+/* Search toolbar */
+.map-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.7rem 0.9rem;
   background: var(--cream);
+  border-bottom: 2px solid var(--ink);
+}
+.map-toolbar label {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.map-toolbar input {
+  flex: 1 1 220px;
+  min-width: 160px;
+  padding: 0.4rem 0.6rem;
   border: 2px solid var(--ink);
   border-radius: 2px;
-  padding: 8px 11px;
-  font-size: 0.78rem;
-  line-height: 1.5;
-  box-shadow: 2px 2px 0 rgba(23, 19, 13, 0.3);
+  background: #fff;
+  font: inherit;
+  font-size: 0.9rem;
 }
-.map-legend strong {
-  display: block;
-  margin-bottom: 4px;
-  color: var(--red-deep);
-  letter-spacing: 0.04em;
+.map-toolbar button {
+  padding: 0.4rem 0.8rem;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  background: var(--gold);
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
 }
-.map-legend .row { display: flex; align-items: center; }
-.map-legend i {
-  width: 12px;
-  height: 12px;
+.map-toolbar button:hover { background: var(--gold-soft); }
+
+/* Chronology panel for a traced copy */
+.copy-panel {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 1100;
+  width: min(340px, calc(100% - 28px));
+  max-height: calc(100% - 28px);
+  overflow-y: auto;
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 rgba(23, 19, 13, 0.3);
+  padding: 1rem 1.1rem 1.2rem;
+}
+.copy-panel[hidden] { display: none; }
+.copy-panel h3 { margin: 0 0 0.2rem; color: var(--red); font-size: 1.15rem; }
+.panel-close {
+  float: right;
+  border: none;
+  background: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--muted);
+}
+.panel-close:hover { color: var(--red); }
+.chron { list-style: none; margin: 0.7rem 0 0; padding: 0; }
+.chron li {
+  position: relative;
+  padding: 0 0 0.9rem 1.1rem;
+  border-left: 2px solid var(--red);
+}
+.chron li:last-child { border-left-color: transparent; }
+.chron li::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 3px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  margin-right: 7px;
-  border: 1px solid var(--ink);
-  flex: none;
+  background: var(--red);
+  border: 2px solid var(--cream);
 }
+.chron-date {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.chron-place { display: block; font-weight: bold; }
+.chron-owner { font-size: 0.9rem; }
+.chron-desc { font-size: 0.82rem; color: var(--muted); font-style: italic; }
 
 .leaflet-popup-content-wrapper {
   border-radius: 3px;
