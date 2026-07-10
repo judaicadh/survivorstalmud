@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About · Tracing the Survivors' Talmud</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site">
+    <div class="bar">
+      <a class="brand" href="index.html">Tracing the Survivors' Talmud
+        <small>A mapping project</small>
+      </a>
+      <nav>
+        <a href="index.html">Map</a>
+        <a href="bibliography.html">Bibliography</a>
+        <a href="about.html" class="active">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1>About this project</h1>
+    <p>Between 1948 and 1950, in the Displaced Persons camps of the American
+      occupation zone in Germany, survivors of the Holocaust — the
+      <em>She'erit Hapletah</em>, the "surviving remnant" — printed a complete
+      edition of the Babylonian Talmud. Known as the <strong>Survivors' Talmud</strong>
+      (<em>Talmud She'erit Hapletah</em>), it was the first Talmud printed on German
+      soil after the war, produced with the support of the U.S. Army.</p>
+
+    <p>This project traces the people, presses, and places connected to that
+      undertaking — where the volumes were printed, where they circulated, and
+      the communities that carried them onward.</p>
+
+    <h2>How the map works</h2>
+    <p>The map is a static site with no server or database. Locations are stored
+      in a Google Sheet with <code>latitude</code> and <code>longitude</code>
+      columns. When the sheet is published to the web as CSV, the map reads it
+      live on load — so editing the spreadsheet updates the map with no code
+      changes. The basemap is CARTO's Positron tiles, drawn with Leaflet.</p>
+
+    <h2>Contributing data</h2>
+    <p>Add a row to the connected Google Sheet with these columns:</p>
+    <ul>
+      <li><code>title</code> — name of the place or event</li>
+      <li><code>latitude</code>, <code>longitude</code> — decimal coordinates (required)</li>
+      <li><code>date</code> — optional</li>
+      <li><code>description</code> — optional</li>
+      <li><code>source</code>, <code>url</code> — optional citation and link</li>
+    </ul>
+  </main>
+
+  <footer class="site">Tracing the Survivors' Talmud · A static mapping project</footer>
+</body>
+</html>

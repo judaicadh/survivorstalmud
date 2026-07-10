@@ -1,0 +1,132 @@
+:root {
+  --ink: #1a1a1a;
+  --muted: #666;
+  --accent: #7a2e2e;
+  --paper: #faf8f4;
+  --line: #e2ddd3;
+  --maxw: 820px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+/* ---------- Header / nav ---------- */
+header.site {
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.bar {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.brand {
+  font-size: 1.15rem;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.brand small {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: normal;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+nav a {
+  color: var(--ink);
+  text-decoration: none;
+  margin-left: 1.1rem;
+  font-size: 0.95rem;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+nav a:hover { border-bottom-color: var(--accent); }
+nav a.active { border-bottom-color: var(--accent); color: var(--accent); }
+
+/* ---------- Map page ---------- */
+#map {
+  width: 100%;
+  height: calc(100vh - 62px);
+  min-height: 420px;
+  background: #dfe6e9;
+}
+.map-status {
+  position: absolute;
+  top: 74px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-family: system-ui, sans-serif;
+}
+.leaflet-popup-content {
+  font-family: Georgia, serif;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.leaflet-popup-content h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1rem;
+  color: var(--accent);
+}
+.leaflet-popup-content .meta {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-family: system-ui, sans-serif;
+}
+
+/* ---------- Content pages ---------- */
+main.content {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+  line-height: 1.7;
+}
+main.content h1 {
+  font-size: 2rem;
+  margin-top: 0;
+  color: var(--accent);
+}
+main.content h2 {
+  margin-top: 2rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.3rem;
+}
+main.content a { color: var(--accent); }
+
+.bib-list { list-style: none; padding: 0; }
+.bib-list li {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line);
+  text-indent: -1.4rem;
+  padding-left: 1.4rem;
+}
+
+footer.site {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 1.5rem;
+  font-family: system-ui, sans-serif;
+}
