@@ -14,10 +14,12 @@
 // ---------------------------------------------------------------------------
 
 window.SITE_CONFIG = {
-  // Published Google Sheet CSV URL. Leave as-is to see the sample fallback.
-  sheetCsvUrl: "PASTE_YOUR_PUBLISHED_CSV_URL_HERE",
+  // Data source. Points at the local provenance file built from the survey.
+  // To edit provenance live from a Google Sheet instead, publish it to CSV
+  // (File > Share > Publish to web > CSV) and paste that URL here.
+  sheetCsvUrl: "data/stops.csv",
 
   // Initial map view [latitude, longitude] and zoom.
-  mapCenter: [50.0, 9.0],
-  mapZoom: 5,
+  mapCenter: [40.0, -20.0],
+  mapZoom: 3,
 };

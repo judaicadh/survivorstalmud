@@ -75,6 +75,24 @@
   // ----- state built from the sheet -----
   const places = new Map();  // coordKey -> { lat, lng, name, entries[] }
   const copies = new Map();  // bookId   -> ordered stops[]
+  let allBounds = null;      // bounds of every place, for (re)fitting
+
+  // The map lives below the fold, so its container often has no size when
+  // Leaflet initializes. Recalculate size and refit the first time it is
+  // actually visible (and on window resize) so markers land in view.
+  function refitToPlaces() {
+    map.invalidateSize();
+    if (allBounds && allBounds.length && !focusLayer)
+      map.fitBounds(allBounds, { padding: [40, 40] });
+  }
+  const mapEl = document.getElementById("map");
+  if (mapEl && "IntersectionObserver" in window) {
+    const vis = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) refitToPlaces();
+    }, { threshold: 0.05 });
+    vis.observe(mapEl);
+  }
+  window.addEventListener("resize", () => map.invalidateSize());
 
   function coordKey(lat, lng) {
     return lat.toFixed(4) + "," + lng.toFixed(4);
@@ -159,7 +177,12 @@
       clusters.addLayer(m);
       bounds.push([place.lat, place.lng]);
     });
-    if (bounds.length) map.fitBounds(bounds, { padding: [40, 40] });
+    allBounds = bounds;
+    if (bounds.length) {
+      map.fitBounds(bounds, { padding: [40, 40] });
+      // Container may still be unsized at first paint; refit next frame.
+      requestAnimationFrame(refitToPlaces);
+    }
 
     // Populate the copy search list (skip anonymous singletons).
     const ids = [...copies.keys()].filter((id) => id.indexOf("__single_") !== 0).sort();
