@@ -76,6 +76,7 @@
   const places = new Map();   // coordKey -> { lat, lng, name, entries[] }
   const copies = new Map();   // bookId   -> ordered stops[]
   const copyMeta = new Map(); // bookId   -> { holder, callNumber, catalogUrl, … }
+  const searchIndex = new Map(); // lower-case label/id -> bookId
   let allBounds = null;       // bounds of every place, for (re)fitting
 
   // The map lives below the fold, so its container often has no size when
@@ -189,10 +190,18 @@
       requestAnimationFrame(refitToPlaces);
     }
 
-    // Populate the copy search list (skip anonymous singletons).
+    // Populate the copy search list with human labels ("Library — copy-id"),
+    // so it can be found by institution name, not just the cryptic id.
     const ids = [...copies.keys()].filter((id) => id.indexOf("__single_") !== 0).sort();
-    if (listEl)
-      listEl.innerHTML = ids.map((id) => '<option value="' + escapeHtml(id) + '">').join("");
+    searchIndex.clear();
+    const options = ids.map((id) => {
+      const m = copyMeta.get(id);
+      const label = m && m.holder ? m.holder + " — " + id : id;
+      searchIndex.set(label.toLowerCase(), id);
+      searchIndex.set(id.toLowerCase(), id);
+      return '<option value="' + escapeHtml(label) + '"></option>';
+    });
+    if (listEl) listEl.innerHTML = options.join("");
 
     setStatus(
       places.size + " place" + (places.size === 1 ? "" : "s") + " · " +
@@ -251,7 +260,8 @@
     panelEl.hidden = false;
     document.getElementById("panel-close").addEventListener("click", () => clearFocus());
 
-    if (searchEl) searchEl.value = bookId;
+    if (searchEl)
+      searchEl.value = meta && meta.holder ? meta.holder + " — " + bookId : bookId;
     map.closePopup();
   };
 
@@ -272,8 +282,9 @@
   if (searchEl)
     searchEl.addEventListener("change", () => {
       const v = searchEl.value.trim();
-      if (copies.has(v)) window.focusCopy(v);
-      else if (!v) clearFocus();
+      if (!v) { clearFocus(); return; }
+      const id = searchIndex.get(v.toLowerCase()) || (copies.has(v) ? v : null);
+      if (id) window.focusCopy(id);
     });
   if (clearEl) clearEl.addEventListener("click", () => clearFocus());
 

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-  <link rel="stylesheet" href="css/style.css?v=7" />
+  <link rel="stylesheet" href="css/style.css?v=8" />
 </head>
 <body>
   <header class="site">
@@ -87,10 +87,13 @@
   <section class="map-section">
     <div class="map-wrap">
       <div class="map-toolbar">
-        <label for="copy-search">Trace a copy</label>
-        <input id="copy-search" list="copy-list" placeholder="Type a copy ID…" autocomplete="off" />
-        <datalist id="copy-list"></datalist>
-        <button id="copy-clear" type="button">Show all</button>
+        <div class="toolbar-search">
+          <label for="copy-search">Follow one copy's journey</label>
+          <input id="copy-search" list="copy-list" placeholder="Search a library or copy…" autocomplete="off" />
+          <datalist id="copy-list"></datalist>
+          <button id="copy-clear" type="button">Show all</button>
+        </div>
+        <p class="toolbar-hint">Search above — or click any pin on the map and choose a copy to trace its path from Heidelberg.</p>
       </div>
       <div id="map"></div>
       <div class="map-status" id="map-status">Loading…</div>
