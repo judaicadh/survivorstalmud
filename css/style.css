@@ -159,12 +159,18 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   border: 3px solid var(--ink);
   box-shadow: 6px 6px 0 rgba(23, 19, 13, 0.25);
 }
+/* The map area is its own positioning context, so overlays (panel, legend,
+   status) sit over the map only — never over the toolbar above it. */
+.map-viewport { position: relative; }
 #map {
   width: 100%;
   height: 74vh;
   min-height: 460px;
   background: var(--cream-deep);
 }
+/* Journey mode: fade the other pins so the traced path reads as movement. */
+.leaflet-marker-pane { transition: opacity 0.25s ease; }
+.map-viewport.journey-mode .leaflet-marker-pane { opacity: 0.4; }
 .map-status {
   position: absolute;
   top: 14px;
@@ -228,7 +234,7 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
 /* Legend */
 .map-legend {
   position: absolute;
-  left: 14px;
+  right: 14px;
   bottom: 14px;
   z-index: 1000;
   max-width: 250px;
@@ -343,6 +349,31 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   outline: none;
   box-shadow: 0 0 0 3px rgba(179, 33, 26, 0.3);
 }
+
+/* Segmented view toggle: All copies | Journey */
+.view-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.view-toggle button {
+  padding: 0.42rem 0.85rem;
+  border: none;
+  border-radius: 0;
+  background: var(--cream);
+  font: inherit;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+}
+.view-toggle button + button { border-left: 2px solid var(--ink); }
+.view-toggle button.active { background: var(--red); color: #fff; }
+.view-toggle button:not(.active):not(:disabled):hover { background: var(--gold-soft); }
+.view-toggle button:disabled { color: #b0a186; cursor: not-allowed; }
 
 /* Chronology panel for a traced copy */
 .copy-panel {

@@ -19,9 +19,28 @@
   const panelEl = document.getElementById("copy-panel");
   const searchEl = document.getElementById("copy-search");
   const listEl = document.getElementById("copy-list");
-  const clearEl = document.getElementById("copy-clear");
+  const viewportEl = document.querySelector(".map-viewport");
+  const locBtn = document.getElementById("view-locations");
+  const jrnBtn = document.getElementById("view-journey");
+
+  let currentCopy = null; // the copy currently traced, if any
 
   const FOCUS_COLOR = "#b3211a";
+
+  // Switch between "all copies" (every location) and "journey" (one path).
+  function setMode(mode) {
+    const journey = mode === "journey";
+    if (locBtn) {
+      locBtn.classList.toggle("active", !journey);
+      locBtn.setAttribute("aria-pressed", String(!journey));
+    }
+    if (jrnBtn) {
+      jrnBtn.classList.toggle("active", journey);
+      jrnBtn.setAttribute("aria-pressed", String(journey));
+      jrnBtn.disabled = !currentCopy;
+    }
+    if (viewportEl) viewportEl.classList.toggle("journey-mode", journey);
+  }
 
   const map = L.map("map").setView(cfg.mapCenter || [40, 0], cfg.mapZoom || 3);
 
@@ -214,6 +233,8 @@
     const stops = copies.get(bookId);
     if (!stops) return;
     clearFocus(true);
+    currentCopy = bookId;
+    setMode("journey");
 
     if (stops.length > 1) {
       focusLayer = L.polyline(stops.map((s) => [s.lat, s.lng]), {
@@ -271,6 +292,8 @@
       panelEl.hidden = true;
       panelEl.innerHTML = "";
       if (searchEl) searchEl.value = "";
+      currentCopy = null;
+      setMode("locations");
     }
   }
 
@@ -286,7 +309,12 @@
       const id = searchIndex.get(v.toLowerCase()) || (copies.has(v) ? v : null);
       if (id) window.focusCopy(id);
     });
-  if (clearEl) clearEl.addEventListener("click", () => clearFocus());
+  // View toggle: "All copies" clears any trace; "Journey" re-shows the last one.
+  if (locBtn) locBtn.addEventListener("click", () => clearFocus());
+  if (jrnBtn)
+    jrnBtn.addEventListener("click", () => {
+      if (currentCopy) window.focusCopy(currentCopy);
+    });
 
   // ----- load + merge: live copies sheet + local intermediate chains -----
   //
