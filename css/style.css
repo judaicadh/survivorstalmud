@@ -187,13 +187,80 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--red);
+  background: radial-gradient(circle at 38% 32%, var(--red) 0%, var(--red-deep) 100%);
   border: 2px solid #fff;
   color: #fff;
   font-family: "Iowan Old Style", Palatino, Georgia, serif;
   font-size: 0.78rem;
   font-weight: bold;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 4px rgba(23, 19, 13, 0.5);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.place-pin:hover .place-dot {
+  transform: scale(1.12);
+  box-shadow: 0 2px 8px rgba(23, 19, 13, 0.6);
+  z-index: 500;
+}
+
+/* Marker clusters, restyled from the Leaflet defaults to the paper palette */
+.marker-cluster {
+  background: rgba(179, 33, 26, 0.22);
+}
+.marker-cluster div {
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, var(--red) 0%, var(--red-deep) 100%);
+  border: 2px solid var(--gold-soft);
+  box-shadow: 0 1px 4px rgba(23, 19, 13, 0.5);
+}
+.marker-cluster span {
+  color: #fff;
+  font-family: "Iowan Old Style", Palatino, Georgia, serif;
+  font-weight: bold;
+  font-size: 0.82rem;
+}
+
+/* Legend */
+.map-legend {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 1000;
+  max-width: 250px;
+  background: rgba(246, 236, 205, 0.94);
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 rgba(23, 19, 13, 0.3);
+  padding: 0.6rem 0.75rem;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.legend-row { display: flex; align-items: center; gap: 0.5rem; }
+.legend-row + .legend-row { margin-top: 0.45rem; }
+.legend-pin {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, var(--red) 0%, var(--red-deep) 100%);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(23, 19, 13, 0.4);
+}
+.legend-pin i {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+}
+.legend-path {
+  flex: 0 0 auto;
+  width: 26px; height: 0;
+  border-top: 3px dotted var(--red);
 }
 
 /* Popup list of copies/owners at a place */
@@ -210,10 +277,10 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
 .map-toolbar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
-  padding: 0.7rem 0.9rem;
-  background: var(--cream);
+  padding: 0.75rem 1rem;
+  background: linear-gradient(var(--cream), var(--cream-deep));
   border-bottom: 2px solid var(--ink);
 }
 .map-toolbar label {
@@ -221,27 +288,43 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
+  font-weight: bold;
 }
 .map-toolbar input {
-  flex: 1 1 220px;
+  flex: 1 1 240px;
   min-width: 160px;
-  padding: 0.4rem 0.6rem;
+  padding: 0.45rem 0.7rem;
   border: 2px solid var(--ink);
   border-radius: 2px;
   background: #fff;
   font: inherit;
   font-size: 0.9rem;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
+}
+.map-toolbar input::placeholder { color: #a3937a; font-style: italic; }
+.map-toolbar input:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(179, 33, 26, 0.18);
 }
 .map-toolbar button {
-  padding: 0.4rem 0.8rem;
+  padding: 0.45rem 0.9rem;
   border: 2px solid var(--ink);
   border-radius: 2px;
   background: var(--gold);
   font: inherit;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: background 0.12s ease, transform 0.06s ease;
 }
 .map-toolbar button:hover { background: var(--gold-soft); }
+.map-toolbar button:active { transform: translateY(1px); }
+.map-toolbar button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(179, 33, 26, 0.3);
+}
 
 /* Chronology panel for a traced copy */
 .copy-panel {
@@ -258,17 +341,36 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   padding: 1rem 1.1rem 1.2rem;
 }
 .copy-panel[hidden] { display: none; }
-.copy-panel h3 { margin: 0 0 0.2rem; color: var(--red); font-size: 1.15rem; }
+.copy-panel h3 {
+  margin: 0 0 0.15rem; color: var(--red); font-size: 1.15rem;
+  letter-spacing: 0.02em;
+}
+.panel-holder {
+  font-weight: bold; font-size: 0.98rem; color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+.panel-facts {
+  font-size: 0.76rem; color: var(--muted); margin: 0.15rem 0 0.35rem;
+}
+.panel-link {
+  display: inline-block; margin-bottom: 0.4rem;
+  font-size: 0.78rem; color: var(--red); text-decoration: none;
+  border-bottom: 1px solid rgba(179, 33, 26, 0.4);
+}
+.panel-link:hover { border-bottom-color: var(--red); }
 .panel-close {
   float: right;
+  width: 26px; height: 26px;
   border: none;
   background: none;
   font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
   color: var(--muted);
+  border-radius: 50%;
+  transition: background 0.12s ease, color 0.12s ease;
 }
-.panel-close:hover { color: var(--red); }
+.panel-close:hover { color: var(--red); background: var(--cream-deep); }
 .chron { list-style: none; margin: 0.7rem 0 0; padding: 0; }
 .chron li {
   position: relative;
@@ -375,4 +477,19 @@ footer.site {
 @media (max-width: 620px) {
   main.content { margin: 1.25rem 0.75rem; padding: 1.75rem 1.25rem; }
   .brand { font-size: 1.25rem; }
+
+  /* Map: give the panel the whole width as a bottom sheet, hide the legend. */
+  .map-section { padding: 1.5rem 0.75rem 2.5rem; }
+  #map { height: 62vh; min-height: 360px; }
+  .map-legend { display: none; }
+  .map-status { top: auto; bottom: 10px; right: 10px; left: 10px; text-align: center; }
+  .copy-panel {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 55%;
+    border-width: 3px 0 0 0;
+    box-shadow: 0 -4px 12px rgba(23, 19, 13, 0.3);
+  }
 }

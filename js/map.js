@@ -73,9 +73,10 @@
   }
 
   // ----- state built from the sheet -----
-  const places = new Map();  // coordKey -> { lat, lng, name, entries[] }
-  const copies = new Map();  // bookId   -> ordered stops[]
-  let allBounds = null;      // bounds of every place, for (re)fitting
+  const places = new Map();   // coordKey -> { lat, lng, name, entries[] }
+  const copies = new Map();   // bookId   -> ordered stops[]
+  const copyMeta = new Map(); // bookId   -> { holder, callNumber, catalogUrl, … }
+  let allBounds = null;       // bounds of every place, for (re)fitting
 
   // The map lives below the fold, so its container often has no size when
   // Leaflet initializes. Recalculate size and refit the first time it is
@@ -213,10 +214,23 @@
 
     // Chronology panel — successive owners, in order.
     const places_n = new Set(stops.map((s) => coordKey(s.lat, s.lng))).size;
+    const meta = copyMeta.get(bookId);
     let html = '<button class="panel-close" id="panel-close" aria-label="Close">&times;</button>';
     html += "<h3>" + escapeHtml(bookId) + "</h3>";
+    if (meta && meta.holder)
+      html += '<div class="panel-holder">' + escapeHtml(meta.holder) + "</div>";
     html += '<div class="meta">' + stops.length + " record" + (stops.length === 1 ? "" : "s") +
       " · " + places_n + " place" + (places_n === 1 ? "" : "s") + "</div>";
+    if (meta) {
+      const bits = [];
+      if (meta.volumes) bits.push(escapeHtml(meta.volumes));
+      if (meta.condition) bits.push(escapeHtml(meta.condition));
+      if (meta.callNumber) bits.push("Call no. " + escapeHtml(meta.callNumber));
+      if (bits.length) html += '<div class="panel-facts">' + bits.join(" · ") + "</div>";
+      if (meta.catalogUrl)
+        html += '<a class="panel-link" href="' + escapeHtml(meta.catalogUrl) +
+          '" target="_blank" rel="noopener">View in catalog →</a>';
+    }
     html += '<ol class="chron">';
     stops.forEach((s) => {
       html += "<li>";
@@ -259,37 +273,109 @@
     });
   if (clearEl) clearEl.addEventListener("click", () => clearFocus());
 
-  // ----- sample provenance until a real sheet URL is set -----
-  const SAMPLE = [
-    { book_id: "copy-1", sequence: 1, date: "1948", location: "Heidelberg", latitude: 49.3988, longitude: 8.6724, owner: "US Army / Rabbinate", event: "printed" },
-    { book_id: "copy-1", sequence: 2, date: "1949", location: "Munich (DP camp)", latitude: 48.1351, longitude: 11.582, owner: "DP camp study house", event: "held in camp" },
-    { book_id: "copy-1", sequence: 3, date: "1950", location: "New York", latitude: 40.7128, longitude: -74.006, owner: "Emigrating survivor", event: "carried abroad" },
-    { book_id: "copy-1", sequence: 4, date: "1958", location: "Philadelphia", latitude: 39.9526, longitude: -75.1652, owner: "Rosenbach family", event: "donated" },
-    { book_id: "copy-1", sequence: 5, date: "1979", location: "Philadelphia", latitude: 39.9526, longitude: -75.1652, owner: "University library", event: "acquired", description: "Same city, new owner — one pin, successive owners." },
-    { book_id: "copy-2", sequence: 1, date: "1948", location: "Heidelberg", latitude: 49.3988, longitude: 8.6724, owner: "US Army / Rabbinate", event: "printed" },
-    { book_id: "copy-2", sequence: 2, date: "1951", location: "Jerusalem", latitude: 31.7683, longitude: 35.2137, owner: "National library", event: "brought to Israel" },
-    { book_id: "copy-3", sequence: 1, date: "1948", location: "Heidelberg", latitude: 49.3988, longitude: 8.6724, owner: "US Army / Rabbinate", event: "printed" },
-    { book_id: "copy-3", sequence: 2, date: "1949", location: "Frankfurt", latitude: 50.1109, longitude: 8.6821, owner: "Rabbinical seminary", event: "gifted" },
-    { book_id: "copy-3", sequence: 3, date: "1952", location: "London", latitude: 51.5074, longitude: -0.1278, owner: "Congregation", event: "carried abroad" },
-  ];
+  // ----- load + merge: live copies sheet + local intermediate chains -----
+  //
+  // The published sheet is one row per copy (current holder + coordinates +
+  // catalog metadata) with fixed columns and blank latitude/longitude headers,
+  // so it is read positionally. Each copy's journey is synthesized as:
+  //   Heidelberg origin  →  intermediate owners (chains.csv)  →  current place.
+  const SHEET_COL = {
+    id: 1, holder: 2, location: 3, lat: 4, lng: 5, callNumber: 6,
+    catalogUrl: 7, pubYear: 8, pubPlace: 9, volumes: 10, condition: 11,
+    binding: 12, markings: 13, provenance: 14, sharePublicly: 15, contributor: 16,
+  };
 
-  function run(rows) { build(rows); render(); }
+  function parseCopies(rows) {
+    const list = [];
+    rows.forEach((row, i) => {
+      if (i === 0 || !Array.isArray(row)) return;      // header row
+      const id = (row[SHEET_COL.id] || "").trim();
+      if (!id) return;                                 // blank placeholder row
+      const lat = parseFloat(row[SHEET_COL.lat]);
+      const lng = parseFloat(row[SHEET_COL.lng]);
+      const meta = {
+        holder: (row[SHEET_COL.holder] || "").trim(),
+        location: (row[SHEET_COL.location] || "").trim(),
+        lat, lng, hasCoords: !isNaN(lat) && !isNaN(lng),
+        callNumber: (row[SHEET_COL.callNumber] || "").trim(),
+        catalogUrl: (row[SHEET_COL.catalogUrl] || "").trim(),
+        volumes: (row[SHEET_COL.volumes] || "").trim(),
+        condition: (row[SHEET_COL.condition] || "").trim(),
+        provenance: (row[SHEET_COL.provenance] || "").trim(),
+        contributor: (row[SHEET_COL.contributor] || "").trim(),
+      };
+      copyMeta.set(id, meta);
+      list.push({ id, meta });
+    });
+    return list;
+  }
 
-  const url = cfg.sheetCsvUrl;
-  if (!url || url.indexOf("PASTE_YOUR") === 0) {
-    setStatus("Showing sample data — add your Google Sheet URL in js/config.js");
-    run(SAMPLE);
+  // Build the flat stop rows the map engine consumes from copies + chains.
+  function mergeRows(copyList, chainMap) {
+    const o = cfg.origin || {};
+    const rows = [];
+    copyList.forEach(({ id, meta }) => {
+      if (!meta.hasCoords) return;                     // can't be placed yet
+      let seq = 1;
+      rows.push({
+        book_id: id, sequence: seq++, date: o.date || "1948",
+        location: o.name || "Heidelberg",
+        latitude: o.latitude, longitude: o.longitude,
+        owner: o.owner || "Carl Winter Press", event: o.event || "printed",
+      });
+      (chainMap.get(id) || []).forEach((m) => {
+        rows.push({
+          book_id: id, sequence: seq++, date: m.date, location: m.location,
+          latitude: parseFloat(m.latitude), longitude: parseFloat(m.longitude),
+          owner: m.owner, event: m.event, description: m.description,
+        });
+      });
+      rows.push({
+        book_id: id, sequence: seq++, date: "",
+        location: meta.location || meta.holder,
+        latitude: meta.lat, longitude: meta.lng,
+        owner: meta.holder, event: "held today",
+        description: meta.provenance, source: meta.callNumber,
+      });
+    });
+    return rows;
+  }
+
+  function start(copyList, chainRows) {
+    const chainMap = new Map();
+    (chainRows || []).forEach((m) => {
+      const id = (m.copy_id || "").trim();
+      if (!id) return;
+      if (!chainMap.has(id)) chainMap.set(id, []);
+      chainMap.get(id).push(m);
+    });
+    chainMap.forEach((arr) => arr.sort(
+      (a, b) => (parseFloat(a.order) || 0) - (parseFloat(b.order) || 0)));
+
+    build(mergeRows(copyList, chainMap));
+    render();
+  }
+
+  const copiesUrl = cfg.copiesCsvUrl;
+  if (!copiesUrl || copiesUrl.indexOf("PASTE_") === 0) {
+    setStatus("Set copiesCsvUrl in js/config.js");
     return;
   }
 
-  setStatus("Loading from Google Sheet…");
-  Papa.parse(url, {
+  setStatus("Loading copies…");
+  let copyList = null, chainRows = null;
+  const tryStart = () => { if (copyList && chainRows) start(copyList, chainRows); };
+
+  Papa.parse(copiesUrl, {
+    download: true, header: false,
+    complete: (r) => { copyList = parseCopies(r.data); tryStart(); },
+    error: (err) => { console.error(err); setStatus("Could not load the copies sheet."); },
+  });
+  // Chains are optional enrichment; on failure the map still draws
+  // Heidelberg → current for every copy.
+  Papa.parse(cfg.chainsCsvUrl || "data/chains.csv", {
     download: true, header: true, skipEmptyLines: true,
-    complete: (results) => run(results.data),
-    error: (err) => {
-      console.error(err);
-      setStatus("Could not load the sheet — showing sample data.");
-      run(SAMPLE);
-    },
+    complete: (r) => { chainRows = r.data; tryStart(); },
+    error: (err) => { console.error(err); chainRows = []; tryStart(); },
   });
 })();

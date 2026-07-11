@@ -1,0 +1,27 @@
+copy_id,order,date,location,latitude,longitude,owner,event,description
+aju-1,1,1948,"New York, NY",40.7128,-74.0060,American Jewish Joint Distribution Committee (JDC),distributed,
+lewin-1,1,,Foehrenwald DP camp,47.8833,11.4167,Rabbi Hirsch Lewin,gifted,"Given by Rav Sneig to Rabbi Hirsch Lewin, a survivor and teacher in the Foehrenwald DP camp, before he left Germany."
+nli-1,1,,Offenbach,50.0955,8.7761,Offenbach Archival Depot,held,"Received from Offenbach, though absence of JCR labels leaves this uncertain."
+koller-1,1,,"New York, NY",40.7128,-74.0060,"Samuel L. Sar (Central Orthodox Committee, JDC)",received,Received as chair of the Central Orthodox Committee of the JDC.
+rrc-1,1,,Germany,51.1657,10.4515,Rabbi Louis Barish (U.S. Army Chaplain),acquired,Acquired by a U.S. Army chaplain stationed in Germany after WWII.
+toronto-1,1,,"Pittsburgh, PA",40.4406,-79.9959,David L. Jacobowitz,owned,"Owner's signature in Hebrew and English, with marginal annotations."
+umich-1,1,,"Los Angeles, CA",34.0522,-118.2437,Stephen M. Passamaneck (HUC-JIR),owned,"From the Frances-Henry Library, Hebrew Union College; gift of Rabbi Henry Tavel."
+tidewater-1,1,,Jerusalem,31.7683,35.2137,Seller in Jerusalem,sold,
+manhattanday-1,1,,"New York, NY",40.7128,-74.0060,Jacob Djmal,owned,
+toronto-2,1,,"Toronto, ON",43.6641,-79.4114,Rabbi Israel Frankel,owned,"Rabbi Israel Frankel, 640 Bathurst St., Toronto."
+towson-1,1,,"Baltimore, MD",39.2904,-76.6122,Harry Greenstein / Baltimore Hebrew College,gifted,"Harry Greenstein, U.S. Advisor on Jewish Affairs in Europe, gifted the set to Baltimore Hebrew College."
+huc-klau-1,1,1948,"New York, NY",40.7128,-74.0060,American Jewish Joint Distribution Committee (JDC),distributed,
+huc-klau-2,1,1948,"New York, NY",40.7128,-74.0060,American Jewish Joint Distribution Committee (JDC),distributed,Distributed following a request from General Clay.
+huc-klau-2,2,,"Louisville, KY",38.2527,-85.7585,Temple Adath Israel,held,
+danwyman-1,1,,"New York, NY",40.8116,-73.9629,Jewish Theological Seminary,held,
+montreal-1,1,2000,"Montreal, QC",45.5017,-73.5673,Eiran Harris,acquired,
+katz-1,1,,"Philadelphia, PA",39.9430,-75.1520,Dropsie College,received,
+berlin-1,1,,Jerusalem,31.7906,35.1889,Eli'ezer Ze'ev Dvorets,owned,
+berlin-1,2,,Jerusalem,31.7906,35.1889,"Yisra'el Zisel Dvorets (Beit Midrash le-Torah, Givat Shaul)",owned,
+uchicago-1,1,1948,"New York, NY",40.7128,-74.0060,American Jewish Joint Distribution Committee (JDC),distributed,
+kentstate-1,1,,"New York, NY",40.7128,-74.0060,Joseph J. Schwartz (JDC Director of Overseas Operations),owned,Name stamped in gold on the covers.
+potsdam-1,1,1980,Heidelberg,49.3988,8.6724,Brigitte Freudenberg,owned,Received the set directly from the Carl Winter Press in the 1980s.
+potsdam-1,2,,Heidelberg,49.3988,8.6724,Dr. Luise Hirsch,owned,"Inherited from her mother, Brigitte Freudenberg."
+louie-1,1,,Tangier,35.7595,-5.8340,"Yeshivat Ets Haim, Tangier",owned,Bears the stamp of Yeshivat Ets Haim in Tangier.
+lac-1,1,,"Winnipeg, MB",49.8951,-97.1384,Winnipeg Jewish Public Library,owned,
+luise-hirsch-1,1,,Heidelberg,49.3988,8.6724,Brigitte Freudenberg,owned,Received the set directly from the Carl Winter Press.
