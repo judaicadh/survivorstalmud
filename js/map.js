@@ -153,12 +153,16 @@
     html += '<div class="place-list">';
     place.entries.slice(0, 60).forEach((e) => {
       const bits = [e.date, e.event].filter(Boolean).join(" · ");
+      const meta = copyMeta.get(e.bookId);
       html += '<div class="place-row">';
       if (e.bookId.indexOf("__single_") !== 0)
         html += '<a href="#" class="copy-link" data-copy="' + escapeHtml(e.bookId) + '">' +
           escapeHtml(e.bookId) + "</a> ";
       if (bits) html += '<span class="meta">' + escapeHtml(bits) + "</span>";
       if (e.owner) html += "<br><strong>" + escapeHtml(e.owner) + "</strong>";
+      if (meta && meta.catalogUrl)
+        html += '<br><a class="popup-cat" href="' + escapeHtml(meta.catalogUrl) +
+          '" target="_blank" rel="noopener">View in library catalog →</a>';
       html += "</div>";
     });
     if (place.entries.length > 60)

@@ -272,6 +272,15 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
 }
 .copy-link { color: var(--red); font-weight: bold; text-decoration: none; }
 .copy-link:hover { text-decoration: underline; }
+.popup-cat {
+  display: inline-block;
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  color: var(--red);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(179, 33, 26, 0.4);
+}
+.popup-cat:hover { border-bottom-color: var(--red); }
 
 /* Search toolbar */
 .map-toolbar {
