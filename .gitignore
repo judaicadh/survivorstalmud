@@ -3,3 +3,6 @@ node_modules/
 *.log
 data/copies.csv
 data/stops.csv
+*.iml
+.idea/modules.xml
+.idea/vcs.xml
