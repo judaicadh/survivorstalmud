@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-  <link rel="stylesheet" href="css/style.css?v=9" />
+  <link rel="stylesheet" href="css/style.css?v=11" />
 </head>
 <body>
   <header class="site">
@@ -93,22 +93,24 @@
           <datalist id="copy-list"></datalist>
           <div class="view-toggle" role="group" aria-label="Map view">
             <button id="view-locations" type="button" class="active" aria-pressed="true">All copies</button>
-            <button id="view-journey" type="button" aria-pressed="false" disabled>Journey</button>
+            <button id="view-journey" type="button" aria-pressed="false">Journey</button>
           </div>
         </div>
         <p class="toolbar-hint">Search above — or click any pin on the map and choose a copy to trace its path from Heidelberg.</p>
       </div>
-      <div class="map-viewport">
-        <div id="map"></div>
-        <div class="map-status" id="map-status">Loading…</div>
-        <div class="map-legend" aria-hidden="true">
-          <div class="legend-row">
-            <span class="legend-pin"><i></i></span>
-            <span>A location — the pin grows with the number of copies held there</span>
-          </div>
-          <div class="legend-row">
-            <span class="legend-path"></span>
-            <span>A single copy's journey, once traced</span>
+      <div class="map-body">
+        <div class="map-viewport">
+          <div id="map"></div>
+          <div class="map-status" id="map-status">Loading…</div>
+          <div class="map-legend" aria-hidden="true">
+            <div class="legend-row">
+              <span class="legend-pin"><i></i></span>
+              <span>A location — the pin grows with the number of copies held there</span>
+            </div>
+            <div class="legend-row">
+              <span class="legend-path"></span>
+              <span>A single copy's journey, once traced</span>
+            </div>
           </div>
         </div>
         <aside class="copy-panel" id="copy-panel" hidden></aside>
@@ -121,8 +123,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="js/config.js?v=9"></script>
-  <script src="js/map.js?v=9"></script>
+  <script src="js/config.js?v=11"></script>
+  <script src="js/map.js?v=11"></script>
   <script>
     // Reveal story sections as they scroll into view.
     (function () {

@@ -159,9 +159,10 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   border: 3px solid var(--ink);
   box-shadow: 6px 6px 0 rgba(23, 19, 13, 0.25);
 }
-/* The map area is its own positioning context, so overlays (panel, legend,
-   status) sit over the map only — never over the toolbar above it. */
-.map-viewport { position: relative; }
+/* Map + docked journey panel sit side by side; the map area is its own
+   positioning context so its overlays (legend, status) never escape it. */
+.map-body { display: flex; align-items: stretch; }
+.map-viewport { position: relative; flex: 1 1 auto; min-width: 0; }
 #map {
   width: 100%;
   height: 74vh;
@@ -278,9 +279,29 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
 }
 .copy-link { color: var(--red); font-weight: bold; text-decoration: none; }
 .copy-link:hover { text-decoration: underline; }
+.place-id {
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+/* Primary call-to-action inside a place popup: trace the copy's journey. */
+.trace-link {
+  display: block;
+  width: fit-content;
+  margin-top: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  background: var(--red);
+  color: #fff;
+  border-radius: 2px;
+  font-size: 0.78rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+.trace-link:hover { background: var(--red-deep); text-decoration: none; }
 .popup-cat {
-  display: inline-block;
-  margin-top: 0.2rem;
+  display: block;
+  width: fit-content;
+  margin-top: 0.35rem;
   font-size: 0.78rem;
   color: var(--red);
   text-decoration: none;
@@ -313,6 +334,15 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   line-height: 1.4;
   color: var(--muted);
   font-style: italic;
+}
+/* Nudge the search when "Journey" is clicked with nothing selected yet. */
+@keyframes nudge-flash {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(179, 33, 26, 0); }
+  30% { box-shadow: 0 0 0 4px rgba(179, 33, 26, 0.28); }
+}
+.toolbar-search.nudge input {
+  animation: nudge-flash 0.7s ease;
+  border-color: var(--red);
 }
 .map-toolbar input {
   flex: 1 1 240px;
@@ -376,17 +406,13 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
 .view-toggle button:disabled { color: #b0a186; cursor: not-allowed; }
 
 /* Chronology panel for a traced copy */
+/* Docked beside the map: a column that never overlaps pins or popups. */
 .copy-panel {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 1100;
-  width: min(340px, calc(100% - 28px));
-  max-height: calc(100% - 28px);
+  flex: 0 0 320px;
+  align-self: stretch;
   overflow-y: auto;
   background: var(--cream);
-  border: 3px solid var(--ink);
-  box-shadow: 4px 4px 0 rgba(23, 19, 13, 0.3);
+  border-left: 2px solid var(--ink);
   padding: 1rem 1.1rem 1.2rem;
 }
 .copy-panel[hidden] { display: none; }
@@ -527,18 +553,17 @@ footer.site {
   main.content { margin: 1.25rem 0.75rem; padding: 1.75rem 1.25rem; }
   .brand { font-size: 1.25rem; }
 
-  /* Map: give the panel the whole width as a bottom sheet, hide the legend. */
+  /* Map: stack the panel below the map instead of docking beside it. */
   .map-section { padding: 1.5rem 0.75rem 2.5rem; }
-  #map { height: 62vh; min-height: 360px; }
+  .map-body { flex-direction: column; }
+  #map { height: 58vh; min-height: 340px; }
   .map-legend { display: none; }
   .map-status { top: auto; bottom: 10px; right: 10px; left: 10px; text-align: center; }
   .copy-panel {
-    top: auto;
-    bottom: 0;
-    left: 0;
+    flex: 0 0 auto;
     width: 100%;
-    max-height: 55%;
-    border-width: 3px 0 0 0;
-    box-shadow: 0 -4px 12px rgba(23, 19, 13, 0.3);
+    max-height: 45vh;
+    border-left: none;
+    border-top: 2px solid var(--ink);
   }
 }

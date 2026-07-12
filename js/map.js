@@ -37,7 +37,6 @@
     if (jrnBtn) {
       jrnBtn.classList.toggle("active", journey);
       jrnBtn.setAttribute("aria-pressed", String(journey));
-      jrnBtn.disabled = !currentCopy;
     }
     if (viewportEl) viewportEl.classList.toggle("journey-mode", journey);
   }
@@ -174,14 +173,16 @@
     place.entries.slice(0, 60).forEach((e) => {
       const bits = [e.date, e.event].filter(Boolean).join(" · ");
       const meta = copyMeta.get(e.bookId);
+      const isCopy = e.bookId.indexOf("__single_") !== 0;
       html += '<div class="place-row">';
-      if (e.bookId.indexOf("__single_") !== 0)
-        html += '<a href="#" class="copy-link" data-copy="' + escapeHtml(e.bookId) + '">' +
-          escapeHtml(e.bookId) + "</a> ";
-      if (bits) html += '<span class="meta">' + escapeHtml(bits) + "</span>";
-      if (e.owner) html += "<br><strong>" + escapeHtml(e.owner) + "</strong>";
+      if (e.owner) html += "<strong>" + escapeHtml(e.owner) + "</strong>";
+      if (isCopy) html += ' <span class="place-id">' + escapeHtml(e.bookId) + "</span>";
+      if (bits) html += '<div class="meta">' + escapeHtml(bits) + "</div>";
+      if (isCopy)
+        html += '<a href="#" class="copy-link trace-link" data-copy="' + escapeHtml(e.bookId) +
+          '">Trace this copy&rsquo;s journey →</a>';
       if (meta && meta.catalogUrl)
-        html += '<br><a class="popup-cat" href="' + escapeHtml(meta.catalogUrl) +
+        html += '<a class="popup-cat" href="' + escapeHtml(meta.catalogUrl) +
           '" target="_blank" rel="noopener">View in library catalog →</a>';
       html += "</div>";
     });
@@ -236,16 +237,6 @@
     currentCopy = bookId;
     setMode("journey");
 
-    if (stops.length > 1) {
-      focusLayer = L.polyline(stops.map((s) => [s.lat, s.lng]), {
-        color: FOCUS_COLOR, weight: 3, opacity: 0.9,
-        dashArray: "1 8", lineCap: "round",
-      }).addTo(map);
-      map.fitBounds(focusLayer.getBounds().pad(0.3));
-    } else {
-      map.setView([stops[0].lat, stops[0].lng], 6);
-    }
-
     // Chronology panel — successive owners, in order.
     const places_n = new Set(stops.map((s) => coordKey(s.lat, s.lng))).size;
     const meta = copyMeta.get(bookId);
@@ -284,6 +275,19 @@
     if (searchEl)
       searchEl.value = meta && meta.holder ? meta.holder + " — " + bookId : bookId;
     map.closePopup();
+
+    // The docked panel just took horizontal space; let the map reflow before
+    // fitting the traced path so it stays clear of the panel.
+    map.invalidateSize();
+    if (stops.length > 1) {
+      focusLayer = L.polyline(stops.map((s) => [s.lat, s.lng]), {
+        color: FOCUS_COLOR, weight: 3, opacity: 0.9,
+        dashArray: "1 8", lineCap: "round",
+      }).addTo(map);
+      map.fitBounds(focusLayer.getBounds().pad(0.3));
+    } else {
+      map.setView([stops[0].lat, stops[0].lng], 6);
+    }
   };
 
   function clearFocus(keepPanel) {
@@ -294,7 +298,16 @@
       if (searchEl) searchEl.value = "";
       currentCopy = null;
       setMode("locations");
+      // Panel undocked — let the map reclaim the width and show every copy.
+      refitToPlaces();
     }
+  }
+
+  // "Journey" with nothing chosen yet: point the eye at the search box.
+  function nudgePickCopy() {
+    const wrap = document.querySelector(".toolbar-search");
+    if (wrap) { wrap.classList.remove("nudge"); void wrap.offsetWidth; wrap.classList.add("nudge"); }
+    if (searchEl) searchEl.focus();
   }
 
   // Copy-link clicks inside place popups.
@@ -314,6 +327,7 @@
   if (jrnBtn)
     jrnBtn.addEventListener("click", () => {
       if (currentCopy) window.focusCopy(currentCopy);
+      else nudgePickCopy();
     });
 
   // ----- load + merge: live copies sheet + local intermediate chains -----
