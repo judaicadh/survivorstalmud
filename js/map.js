@@ -62,6 +62,17 @@
 
   const setStatus = (msg) => { if (statusEl) statusEl.textContent = msg; };
 
+  // Turn a mailing address into a readable place label:
+  // "1545 West University Ave, Gainesville, FL 32611" -> "Gainesville, FL".
+  function shortPlace(name) {
+    if (!name) return name;
+    let parts = name.split(",").map((s) => s.trim()).filter(Boolean);
+    if (parts.length > 1 && /^\d/.test(parts[0])) parts.shift();     // drop street line
+    parts = parts.map((p) => p.replace(/\s+\d{4,6}(-\d{3,4})?$/, "").trim()); // strip ZIPs
+    const out = parts.filter(Boolean).join(", ");
+    return out || name;
+  }
+
   function pick(row, names) {
     const keys = Object.keys(row);
     for (const name of names) {
@@ -164,7 +175,7 @@
     const realCopies = new Set(
       place.entries.filter((e) => e.bookId.indexOf("__single_") !== 0).map((e) => e.bookId)
     );
-    let html = "<h3>" + escapeHtml(place.name) + "</h3>";
+    let html = "<h3>" + escapeHtml(shortPlace(place.name)) + "</h3>";
     html += '<div class="meta">' + place.entries.length + " record" +
       (place.entries.length === 1 ? "" : "s") +
       (realCopies.size ? " · " + realCopies.size + " cop" + (realCopies.size === 1 ? "y" : "ies") : "") +
@@ -260,7 +271,7 @@
     stops.forEach((s) => {
       html += "<li>";
       html += '<span class="chron-date">' + (escapeHtml(s.date) || "—") + "</span>";
-      html += '<span class="chron-place">' + escapeHtml(s.location) + "</span>";
+      html += '<span class="chron-place">' + escapeHtml(shortPlace(s.location)) + "</span>";
       const line = [s.event, s.owner].filter(Boolean).map(escapeHtml).join(" — ");
       if (line) html += '<div class="chron-owner">' + line + "</div>";
       if (s.description) html += '<div class="chron-desc">' + escapeHtml(s.description) + "</div>";
@@ -279,15 +290,24 @@
     // The docked panel just took horizontal space; let the map reflow before
     // fitting the traced path so it stays clear of the panel.
     map.invalidateSize();
-    if (stops.length > 1) {
-      focusLayer = L.polyline(stops.map((s) => [s.lat, s.lng]), {
+    const latlngs = stops.map((s) => [s.lat, s.lng]);
+    const group = L.layerGroup();
+    if (latlngs.length > 1)
+      L.polyline(latlngs, {
         color: FOCUS_COLOR, weight: 3, opacity: 0.9,
         dashArray: "1 8", lineCap: "round",
-      }).addTo(map);
-      map.fitBounds(focusLayer.getBounds().pad(0.3));
-    } else {
-      map.setView([stops[0].lat, stops[0].lng], 6);
-    }
+      }).addTo(group);
+    // Crisp stop markers (in the overlay pane) sit above the clustered pins, so
+    // the route's own stops read clearly without fading everything else.
+    latlngs.forEach((ll) =>
+      L.circleMarker(ll, {
+        radius: 6, color: "#fff", weight: 2,
+        fillColor: FOCUS_COLOR, fillOpacity: 1,
+      }).addTo(group));
+    group.addTo(map);
+    focusLayer = group;
+    if (latlngs.length > 1) map.fitBounds(L.latLngBounds(latlngs).pad(0.3));
+    else map.setView(latlngs[0], 6);
   };
 
   function clearFocus(keepPanel) {

@@ -169,9 +169,6 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   min-height: 460px;
   background: var(--cream-deep);
 }
-/* Journey mode: fade the other pins so the traced path reads as movement. */
-.leaflet-marker-pane { transition: opacity 0.25s ease; }
-.map-viewport.journey-mode .leaflet-marker-pane { opacity: 0.4; }
 .map-status {
   position: absolute;
   top: 14px;
@@ -277,15 +274,17 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   border-top: 1px dotted var(--cream-deep);
   font-size: 0.86rem;
 }
-.copy-link { color: var(--red); font-weight: bold; text-decoration: none; }
-.copy-link:hover { text-decoration: underline; }
+/* NOTE: these selectors are scoped under .leaflet-popup-content so they beat
+   Leaflet's own `.leaflet-container a { color:#0078A8 }` (blue) on specificity. */
+.leaflet-popup-content .copy-link { color: var(--red); font-weight: bold; text-decoration: none; }
+.leaflet-popup-content .copy-link:hover { text-decoration: underline; }
 .place-id {
   font-size: 0.72rem;
   color: var(--muted);
   letter-spacing: 0.04em;
 }
 /* Primary call-to-action inside a place popup: trace the copy's journey. */
-.trace-link {
+.leaflet-popup-content .trace-link {
   display: block;
   width: fit-content;
   margin-top: 0.45rem;
@@ -297,8 +296,8 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   font-weight: bold;
   text-decoration: none;
 }
-.trace-link:hover { background: var(--red-deep); text-decoration: none; }
-.popup-cat {
+.leaflet-popup-content .trace-link:hover { background: var(--red-deep); text-decoration: none; }
+.leaflet-popup-content .popup-cat {
   display: block;
   width: fit-content;
   margin-top: 0.35rem;
@@ -307,7 +306,7 @@ nav a.active { border-bottom-color: var(--red); color: var(--red-deep); }
   text-decoration: none;
   border-bottom: 1px solid rgba(179, 33, 26, 0.4);
 }
-.popup-cat:hover { border-bottom-color: var(--red); }
+.leaflet-popup-content .popup-cat:hover { border-bottom-color: var(--red); }
 
 /* Search toolbar */
 .map-toolbar {
