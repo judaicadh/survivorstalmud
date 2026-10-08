@@ -37,7 +37,7 @@ window.SITE_CONFIG = {
 
   // Basemap tiles. `url` keeps the {z}/{x}/{y} placeholders; if you have an
   // authenticated CARTO tile URL from your dashboard, paste it here. When
-  // `apiKey` is set it is appended as CARTO's ?api_key= parameter.
+  // `apiKey` is set it is appended as CARTO's ?key= parameter.
   // NOTE: this key ships in client-side code (it is visible in page source);
   // it is protected by the domain restriction set on it in CARTO.
   basemap: {

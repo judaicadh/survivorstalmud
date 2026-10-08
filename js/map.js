@@ -46,9 +46,11 @@
   const basemap = cfg.basemap || {};
   let tileUrl = basemap.url ||
     "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+  // CARTO authenticates basemap tiles with ?key= (NOT ?api_key=, which it
+  // ignores — leaving the "API KEY REQUIRED" watermark).
   if (basemap.apiKey)
     tileUrl += (tileUrl.indexOf("?") === -1 ? "?" : "&") +
-      "api_key=" + encodeURIComponent(basemap.apiKey);
+      "key=" + encodeURIComponent(basemap.apiKey);
 
   L.tileLayer(tileUrl, {
     attribution: basemap.attribution ||
