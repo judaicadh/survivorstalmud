@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A copy of the Survivors' Talmud</title>
+  <meta name="description" content="The record and journey of a single copy of the Survivors' Talmud." />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css?v=15" />
+</head>
+<body>
+  <header class="site">
+    <div class="bar">
+      <a class="brand" href="index.html">Tracing the Survivors' Talmud
+        <small>A mapping project</small>
+      </a>
+      <nav>
+        <a href="index.html">Map</a>
+        <a href="copies.html" class="active">Copies</a>
+        <a href="bibliography.html">Bibliography</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="content copy-page">
+    <p class="copy-back"><a href="copies.html">&larr; All copies</a></p>
+    <div id="copy-root">
+      <p class="copy-loading">Loading this copy&rsquo;s record&hellip;</p>
+    </div>
+  </main>
+
+  <footer class="site">Tracing the Survivors' Talmud · A static mapping project</footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="js/config.js?v=18"></script>
+  <script src="js/copy.js?v=1"></script>
+</body>
+</html>

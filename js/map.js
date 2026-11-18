@@ -198,6 +198,9 @@
       if (isCopy)
         html += '<a href="#" class="copy-link trace-link" data-copy="' + escapeHtml(e.bookId) +
           '">Trace this copy&rsquo;s journey →</a>';
+      if (isCopy)
+        html += '<a class="popup-cat" href="copy.html?id=' + encodeURIComponent(e.bookId) +
+          '">Open this copy&rsquo;s page →</a>';
       if (meta && meta.catalogUrl)
         html += '<a class="popup-cat" href="' + escapeHtml(meta.catalogUrl) +
           '" target="_blank" rel="noopener">View in library catalog →</a>';
@@ -272,7 +275,12 @@
       if (meta.catalogUrl)
         html += '<a class="panel-link" href="' + escapeHtml(meta.catalogUrl) +
           '" target="_blank" rel="noopener">View in catalog →</a>';
+      if (meta.correspondence)
+        html += '<a class="panel-link" href="' + escapeHtml(meta.correspondence) +
+          '" target="_blank" rel="noopener">✉ Related letter →</a>';
     }
+    html += '<a class="panel-link panel-page-link" href="copy.html?id=' +
+      encodeURIComponent(bookId) + '">Open this copy&rsquo;s full page →</a>';
     html += '<ol class="chron">';
     stops.forEach((s) => {
       html += "<li>";
@@ -365,7 +373,8 @@
   const SHEET_COL = {
     id: 1, holder: 2, location: 3, lat: 4, lng: 5, callNumber: 6,
     catalogUrl: 7, pubYear: 8, pubPlace: 9, volumes: 10, condition: 11,
-    binding: 12, markings: 13, provenance: 14, sharePublicly: 15, contributor: 16,
+    binding: 12, markings: 13, provenance: 14, sharePublicly: 15,
+    contributor: 16, correspondence: 17,
   };
 
   function parseCopies(rows) {
@@ -386,6 +395,7 @@
         condition: (row[SHEET_COL.condition] || "").trim(),
         provenance: (row[SHEET_COL.provenance] || "").trim(),
         contributor: (row[SHEET_COL.contributor] || "").trim(),
+        correspondence: (row[SHEET_COL.correspondence] || "").trim(),
       };
       copyMeta.set(id, meta);
       list.push({ id, meta });

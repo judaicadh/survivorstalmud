@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The copies — Survivors' Talmud</title>
+  <meta name="description" content="Every recorded copy of the Survivors' Talmud, with a page for each." />
+  <link rel="stylesheet" href="css/style.css?v=15" />
+</head>
+<body>
+  <header class="site">
+    <div class="bar">
+      <a class="brand" href="index.html">Tracing the Survivors' Talmud
+        <small>A mapping project</small>
+      </a>
+      <nav>
+        <a href="index.html">Map</a>
+        <a href="copies.html" class="active">Copies</a>
+        <a href="bibliography.html">Bibliography</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1>The copies</h1>
+    <p>Every recorded copy of the Survivors&rsquo; Talmud. Select one to see its
+      record, its journey from Heidelberg, and any related correspondence.</p>
+
+    <div class="copies-toolbar">
+      <input id="copies-filter" type="search" placeholder="Filter by holder, place, or id…" autocomplete="off" />
+      <span class="copies-count" id="copies-count"></span>
+    </div>
+
+    <ul class="copies-list" id="copies-list">
+      <li class="copies-loading">Loading copies&hellip;</li>
+    </ul>
+  </main>
+
+  <footer class="site">Tracing the Survivors' Talmud · A static mapping project</footer>
+
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="js/config.js?v=18"></script>
+  <script src="js/copies.js?v=1"></script>
+</body>
+</html>
