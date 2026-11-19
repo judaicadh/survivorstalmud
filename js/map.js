@@ -277,7 +277,7 @@
           '" target="_blank" rel="noopener">View in catalog →</a>';
       if (meta.correspondence)
         html += '<a class="panel-link" href="' + escapeHtml(meta.correspondence) +
-          '" target="_blank" rel="noopener">✉ Related letter →</a>';
+          '" target="_blank" rel="noopener">✉ Related document →</a>';
     }
     html += '<a class="panel-link panel-page-link" href="copy.html?id=' +
       encodeURIComponent(bookId) + '">Open this copy&rsquo;s full page →</a>';

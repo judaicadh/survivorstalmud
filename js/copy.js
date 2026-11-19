@@ -84,13 +84,13 @@
       try { host = new URL(meta.correspondence).hostname.replace(/^www\./, ""); }
       catch (e) { host = ""; }
       html += "<h2>Related correspondence</h2>";
-      html += '<p class="copy-corr-note">A letter or archival document connected ' +
-        "to this copy.</p>";
+      html += '<p class="copy-corr-note">A document connected ' +
+        "to this copy &mdash; a letter, article, or archival record.</p>";
       html += '<a class="copy-corr-card" href="' + escapeHtml(meta.correspondence) +
         '" target="_blank" rel="noopener">';
       html += '<span class="copy-corr-icon" aria-hidden="true">&#9993;</span>';
       html += '<span class="copy-corr-text">';
-      html += '<span class="copy-corr-title">View the letter</span>';
+      html += '<span class="copy-corr-title">View the document</span>';
       if (host) html += '<span class="copy-corr-host">' + escapeHtml(host) + "</span>";
       html += "</span>";
       html += '<span class="copy-corr-go" aria-hidden="true">&rarr;</span>';

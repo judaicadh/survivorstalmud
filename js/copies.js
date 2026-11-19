@@ -42,7 +42,7 @@
     h += '<span class="copy-card-foot">';
     h += '<span class="copy-card-id">' + escapeHtml(c.id) + "</span>";
     if (c.hasCorr)
-      h += '<span class="copy-card-badge" title="Related correspondence">&#9993; letter</span>';
+      h += '<span class="copy-card-badge" title="Related correspondence">&#9993; document</span>';
     h += "</span>";
     h += "</a></li>";
     return h;
