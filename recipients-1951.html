@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The 1951 recipients — Survivors' Talmud</title>
+  <meta name="description" content="Institutions and individuals listed in the JDC's 1951 letter as receiving a complete set of the Survivors' Talmud." />
+  <link rel="stylesheet" href="css/style.css?v=16" />
+</head>
+<body>
+  <header class="site">
+    <div class="bar">
+      <a class="brand" href="index.html">Tracing the Survivors' Talmud
+        <small>A mapping project</small>
+      </a>
+      <nav>
+        <a href="index.html">Map</a>
+        <a href="copies.html">Copies</a>
+        <a href="recipients-1951.html" class="active">1951 Sets</a>
+        <a href="bibliography.html">Bibliography</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1>The 1951 recipients</h1>
+    <p>In 1951 the American Jewish Joint Distribution Committee recorded, under
+      the heading <em>&ldquo;Re: Full set of Shas,&rdquo;</em> the institutions
+      and individuals who received a complete set of the Survivors&rsquo; Talmud.
+      This is that list &mdash; the starting point for tracing where each set is
+      today. Where a set has already been located, its status is noted.</p>
+
+    <div class="r51-legend" id="r51-legend" aria-hidden="true">
+      <span class="r51-chip r51-kept">Located / on the map</span>
+      <span class="r51-chip r51-moved">Moved since 1951</span>
+      <span class="r51-chip r51-note">Note recorded</span>
+    </div>
+
+    <div class="copies-toolbar">
+      <input id="r51-filter" type="search" placeholder="Filter by name, place, or status…" autocomplete="off" />
+      <span class="copies-count" id="r51-count"></span>
+    </div>
+
+    <div id="r51-root">
+      <p class="copies-loading">Loading the 1951 list&hellip;</p>
+    </div>
+  </main>
+
+  <footer class="site">Tracing the Survivors' Talmud · A static mapping project</footer>
+
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="js/config.js?v=19"></script>
+  <script src="js/recipients-1951.js?v=1"></script>
+</body>
+</html>
