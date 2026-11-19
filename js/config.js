@@ -24,6 +24,14 @@ window.SITE_CONFIG = {
   copiesCsvUrl:
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vR30JgaqrE-R1eZxPEh8YKIcuuKBO8_CotQqJpwERr1HvejryWwRaPOpis7l6clEwNsaj6jDIysmV9m/pub?output=csv",
 
+  // The 1951 "Full set of Shas" recipients tab of the same published workbook
+  // (institutions and individuals the JDC letter lists as receiving a complete
+  // set). Read live, like the copies sheet. Column headers used:
+  //   Name | City/State/Country | contact date | Still has set? | Contact Name
+  //   | Contact email | Link to Catalog | JDC Letter Link
+  recipients1951CsvUrl:
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vR30JgaqrE-R1eZxPEh8YKIcuuKBO8_CotQqJpwERr1HvejryWwRaPOpis7l6clEwNsaj6jDIysmV9m/pub?gid=1233847944&single=true&output=csv",
+
   // Intermediate historical owners between the Heidelberg origin and the
   // current location, keyed by copy_id (local file). Optional enrichment —
   // copies without a chain simply show Heidelberg → current.
